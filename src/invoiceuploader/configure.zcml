@@ -1,0 +1,85 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:browser="http://namespaces.zope.org/browser"
+           xmlns:grokcore.error="http://grok.zope.org/grokcore.error"
+           xmlns:grok="http://namespaces.zope.org/grok">
+
+  <include package="zope.app.publication" file="meta.zcml" />
+  <include package="zope.browserpage" file="meta.zcml" />
+  <include package="zope.component" file="meta.zcml" />
+  <include package="zope.i18n" file="meta.zcml" />
+  <include package="zope.publisher" file="meta.zcml" />
+  <include package="zope.security" file="meta.zcml" />
+  <include package="zope.errorview" file="browser.zcml"/>
+  <include package="zope.principalregistry" file="meta.zcml" />
+  <include package="zope.securitypolicy" file="meta.zcml" />
+
+  <include package="zope.app.publication" />
+  <include package="zope.traversing"/>
+  <include package="zope.traversing.browser "/>
+  <include package="zope.principalregistry" />
+  <include package="grokcore.chameleon" />
+  <include package="grokcore.error" file="meta.zcml" />
+
+  <grokcore.error:errorreportingutility
+    factory="grokcore.error.LoggingErrorReporting"
+    info_level_errors=""
+    warning_level_errors=""
+    always_exc_info="false"
+  />
+
+
+  <publisher
+      name="BROWSER"
+      factory="grokcore.view.publication.GrokBrowserFactory"
+      methods="GET POST HEAD"
+      mimetypes="*"
+      priority="11"
+      />
+
+  <include package="grokcore.view" file="meta-minimal.zcml" />
+  <include package="grokcore.component" file="meta.zcml" />
+  <include package="grokcore.error" />
+  <include package="grokcore.message" />
+  <include package="dolmen.beaker" />
+
+  <browser:defaultView
+    for="zope.interface.common.interfaces.IException"
+    name="index"
+  />
+
+  <browser:defaultView
+    for=".app.LoginServer"
+    name="index"
+  />
+
+
+  <browser:page
+    for="zope.interface.common.interfaces.IException"
+    class="zope.errorview.browser.ExceptionView"
+    name="index"
+    permission="zope.Public"
+  />
+
+  <browser:page
+    for="zope.security.interfaces.IUnauthorized"
+    class="zope.errorview.browser.UnauthorizedView"
+    name="index"
+    permission="zope.Public"
+  />
+
+  <browser:page
+    for="zope.publisher.interfaces.INotFound"
+    class="zope.errorview.browser.NotFoundView"
+    name="index"
+    permission="zope.Public"
+  />
+  <include package="zeam.form.base" />
+  <include package="zeam.form.ztk" />
+  <!-- session -->
+   <browser:beakerSession
+       secret="Test"
+       validate_key="Some key" />
+
+  <grok:grok package=".app" />
+
+</configure>

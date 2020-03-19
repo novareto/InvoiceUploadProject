@@ -1,0 +1,56 @@
+<VirtualHost ${settings:ext_ip}:80>
+    
+    ServerAdmin team-web@bg-verkehr.de
+    ServerName ${settings:host}
+
+    LogLevel warn
+    CustomLog /var/log/apache2/${settings:host}_access.log combined
+    ErrorLog /var/log/apache2/${settings:host}_error.log
+
+    # RewriteRules
+    RewriteEngine on
+    RewriteCond %{HTTPS} !=on
+    RewriteRule ^/?(.*) https://%{SERVER_NAME}/$1 [R,L]
+</VirtualHost>
+
+<VirtualHost ${settings:ext_ip}:443>
+    ServerAdmin team-web@bg-verkehr.de
+    ServerName ${settings:host}
+
+    LogLevel warn
+    CustomLog /var/log/apache2/${settings:host}_access.log combined
+    ErrorLog /var/log/apache2/${settings:host}_error.log
+
+    SSLEngine on 
+    SSLCertificateFile /etc/apache2/cert/${settings:ssl_suffix}.crt
+    SSLCertificateChainFile /etc/apache2/cert/${settings:ssl_suffix}.ca
+    SSLCertificateKeyFile /etc/apache2/cert/${settings:ssl_suffix}.key
+
+    TKTAuthPublicKey ${settings:public_key}
+    <Proxy http://${settings:auth_service}/*>
+      AuthType mod_auth_pubtkt
+      TKTAuthLoginURL https://${settings:host}/login
+      TKTAuthTimeoutURL https://${settings:host}/login?timeout
+      TKTAuthUnauthURL https://${settings:host}/login?unauth
+      TKTAuthDebug 3
+      TKTAuthFakeBasicAuth on
+      TKTAuthPassthruBasicAuth on
+      TKTAuthPassthruBasicKey ${settings:aes_cipher} 
+      require valid-user
+    </Proxy>
+  
+    #WSGIDaemonProcess myapp 
+    #WSGIProcessGroup myapp
+    WSGIScriptAlias /login ${buildout:parts-directory}/wsgi/wsgi
+
+    <Directory ${buildout:parts-directory}/wsgi>
+        Require all granted
+    </Directory>
+
+
+    RewriteEngine on
+    RewriteCond %{REQUEST_URI} !^/login 
+    RewriteEngine on
+    RewriteRule ${settings:rewrite_rule} [L,P]
+
+</VirtualHost>
