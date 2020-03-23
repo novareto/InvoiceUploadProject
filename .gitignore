@@ -131,8 +131,5 @@ include/
 lib/
 .installed.cfg
 .mr.developer.cfg
-extends-cache/
-apache/
-keys/
 lib64
 pyvenv.cfg
