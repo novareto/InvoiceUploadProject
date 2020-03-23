@@ -1,5 +1,5 @@
 from fanstatic import Library, Resource
 
-library = Library('loginserver', 'static')
+library = Library('invoiceuploader', 'static')
 
 style = Resource(library, 'style.css')

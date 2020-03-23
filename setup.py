@@ -28,13 +28,26 @@ setup(name='invoiceuploader',
                         'zope.securitypolicy',
                         'grokcore.error',
                         'dolmen.beaker',
+                        'uvc.tbskin',
+                        'uvc.layout',
                         'zeam.form.base',
                         'zeam.form.ztk',
+                        'zeam.form.layout',
+                        'ukhtheme.grok',
+                        'ukhtheme.resources',
                         'waitress',
-                        # Add extra requirements here
+                        'megrok.z3ctable',
+                        'dolmen.forms.wizard',
+                        'dolmen.forms.base',
+                        'uvc.api',
+                        'uvc.protectionwidgets',
+                        'uvc.uploader',
+                        'reportlab',
+                        'PyPDF2',
+                        'img2pdf',
                         ],
       entry_points={
           'fanstatic.libraries': [
-              'loginserver = invoiceuploader.resource:library',
+              'invoiceuploader = invoiceuploader.resource:library',
           ]
       })

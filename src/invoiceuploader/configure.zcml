@@ -48,7 +48,7 @@
   />
 
   <browser:defaultView
-    for=".app.LoginServer"
+    for=".app.InvoiceUploader"
     name="index"
   />
 
@@ -75,10 +75,19 @@
   />
   <include package="zeam.form.base" />
   <include package="zeam.form.ztk" />
+  <include package="uvc.layout" />
+  <include package="ukhtheme.grok" />
+  <browser:defaultSkin name="ukhtheme" />
   <!-- session -->
    <browser:beakerSession
        secret="Test"
        validate_key="Some key" />
+   <include package="uvc.uploader" />
+   <include package="uvc.protectionwidgets" />
+   <browser:recaptcha
+     public_key="6LfKqOIUAAAAAC534cDYdogipKFElYUJ99DpcyFc"
+     private_key="6LfKqOIUAAAAABXec4Bg-yBR1MQfMVdNwnAFyB4n"
+   />
 
   <grok:grok package=".app" />
 

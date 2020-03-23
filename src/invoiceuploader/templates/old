@@ -1,0 +1,102 @@
+<div>
+	<h1> Rechnungen Online einreichen </h1>
+	<div>
+		<p>
+			Bitte geben Sie uns hier......
+		</p>
+		<fieldset>
+			<form class="form-horizontal" enctype="multipart/form-data" method="post" novalidate="novalidate" action="" tal:attributes="action request.URL">
+
+
+					<div class="row col-md-12">
+            <div tal:define="widget view.fieldWidgets.get('form.field.anrede')">
+               <span tal:content="widget" />
+                 <!--
+                 <div metal:use-macro="path: view/template/macros/field_inline_fix_uk" />
+                 -->
+						</div>
+					</div>
+          <!--
+					<div class="row col-md-12">
+						<div tal:define="widget view.fieldWidgets.get('form.field.titel')"
+							metal:use-macro="path: view/template/macros/field_inline_fix_uk">
+						</div>
+					</div>
+
+					<div class="row col-md-12">
+						<div tal:define="widget view.fieldWidgets.get('form.field.nachname')"
+							metal:use-macro="path: view/template/macros/field_inline_fix_uk">
+						</div>
+					</div>
+
+					<div class="row col-md-12">
+						<div tal:define="widget view.fieldWidgets.get('form.field.vorname')"
+							metal:use-macro="path: view/template/macros/field_inline_fix_uk">
+						</div>
+					</div>
+
+					<div class="row col-md-12">
+						<div tal:define="widget view.fieldWidgets.get('form.field.email')"
+							metal:use-macro="path: view/template/macros/field_inline_fix_uk">
+						</div>
+					</div>
+
+
+					<div class="row col-md-12">
+						<div tal:define="widget view.fieldWidgets.get('form.field.telefon')"
+							metal:use-macro="path: view/template/macros/field_inline_fix_uk">
+						</div>
+					</div>
+
+
+					<div class="row col-md-12">
+						<div tal:define="widget view.fieldWidgets.get('form.field.aktz')"
+							metal:use-macro="path: view/template/macros/field_inline_fix_uk">
+						</div>
+					</div>
+
+					<div class="row col-md-12">
+						<div tal:define="widget view.fieldWidgets.get('form.field.unternehmen')"
+							metal:use-macro="path: view/template/macros/field_inline_fix_uk">
+						</div>
+					</div>
+
+					<div class="row col-md-12">
+						<div tal:define="widget view.fieldWidgets.get('form.field.notiz')"
+							metal:use-macro="path: view/template/macros/field_inline_fix_uk">
+						</div>
+					</div>
+
+					<div class="row col-md-12">
+						<div tal:define="widget view.fieldWidgets.get('form.field.anlagen')"
+							metal:use-macro="path: view/template/macros/field_inline_fix_uk">
+						</div>
+					</div>
+
+					<div class="row col-md-12">
+						<div tal:define="widget view.fieldWidgets.get('form.field.captcha')"
+							metal:use-macro="path: view/template/macros/field_inline_fix_uk">
+						</div>
+					</div>
+          -->
+				<div class="row">
+					<div metal:use-macro="path: view/template/macros/form-actions"></div>
+				</div>
+			</form>
+		</fieldset>
+	</div>
+
+<span metal:define-macro="field_inline_fix_uk" tal:attributes="id 'field-' + widget.htmlId(); class widget.error and 'control-group error' or 'control-group'">
+    <label for="#" tal:attributes="for widget.htmlId()" tal:content="widget.title"> </label>
+      <p class="help-block">
+        <span tal:condition="widget.description" tal:content="structure widget.description" tal:attributes="for widget.htmlId()"></span>
+      </p>
+    <tal:widget tal:content="structure widget.render()" />
+</span>
+
+<div metal:define-macro="form-actions" class="form-actions" tal:condition="view.actionWidgets">
+    <span class="action" tal:repeat="widget view.actionWidgets">
+        <tal:widget tal:content="structure widget.render()" />
+    </span>
+</div>
+</div>

@@ -8,11 +8,3 @@ site-definition ${site_zcml:output}
 
 devmode off 
 
-<product-config loginserver>
-    private_key ${settings:private_key}
-    public_key ${settings:public_key}
-    domain ${settings:domain}
-    url ${settings:url}
-    auth_service ${settings:auth_service}
-    aes_cipher ${settings:aes_cipher}
-</product-config>
