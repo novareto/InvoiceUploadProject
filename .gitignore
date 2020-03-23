@@ -136,3 +136,12 @@ apache/
 keys/
 lib64
 pyvenv.cfg
+
+log/accesslog.log
+log/event.log
+
+src/dolmen.beaker/
+src/megrok.nozodb/
+src/ukhtheme.grok/
+src/ukhtheme.resources/
+src/uvc.uploader/
