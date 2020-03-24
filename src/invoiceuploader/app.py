@@ -5,7 +5,7 @@
 import img2pdf
 import logging
 import grokcore.view as grok
-# from invoiceuploader import resource
+from invoiceuploader import resource
 
 
 from PIL import Image
@@ -20,6 +20,7 @@ from zeam.form.base import action, Fields
 from dolmen.forms.base import ApplicationForm
 from PyPDF2 import PdfFileReader, PdfFileWriter
 from zope.app.appsetup.product import getProductConfiguration
+from uvc.tbskin.viewlets import FlashMessages
 
 
 logger = logging.getLogger('impageuploader')
@@ -36,12 +37,19 @@ class InvoiceUploader(ApplicationRoot):
     pass
 
 
+class FlashMessages(FlashMessages):
+    pass
+
+
 class LandingPage(ApplicationForm):
     grok.context(interface.IInvoiceUploader)
     grok.name("index")
     grok.require("zope.Public")
 
     fields = Fields(interface.IInvoice)
+
+    def update(self):
+        resource.style.need()
 
     @action("Senden")
     def handel_save(self):
@@ -78,3 +86,4 @@ class LandingPage(ApplicationForm):
                     writer.addPage(reader.getPage(n))
                     writer.write(output)
         self.flash(u'Vielen Dank wir haben Ihre Dateien erhalten.')
+        self.redirect(self.application_url())

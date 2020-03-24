@@ -1,1 +1,8 @@
-/* */
+div.error {
+    border: 1px solid #b94a48;
+    margin-bottom: 16px;
+}
+
+.control-group {
+    padding: 10px;
+}
