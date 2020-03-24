@@ -15,9 +15,9 @@ from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 def source_anrede(context):
     return SimpleVocabulary([
         SimpleTerm(u'', u'', u''),
-        SimpleTerm(u'herr', u'herr', u'Herr'),
-        SimpleTerm(u'frau', u'frau', u'Frau'),
-        SimpleTerm(u'divers', u'divers', u'Divers'),
+        SimpleTerm(u'Herr', u'Herr', u'Herr'),
+        SimpleTerm(u'Frau', u'Frau', u'Frau'),
+        SimpleTerm(u'Divers', u'Divers', u'Divers'),
     ])
 
 
@@ -79,12 +79,12 @@ class IInvoice(interface.Interface):
     notiz = schema.Text(
         title=u"Ihre Mitteilung an uns:",
         description=u"",
-        required=True
+        required=False
     )
 
     anlagen = FilesField(
         title=u"Anlagen",
-        description=u"",
+        description=u"Bitte beachten Sie, dass nur folgende Formate zugelassen werden. (gif, png, jpeg, pdf)",
         required=False
     )
 

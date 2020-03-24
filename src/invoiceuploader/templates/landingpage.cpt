@@ -1,20 +1,22 @@
 <div>
+  <!--  
   <div class="pull-right">
     * Pflichtfeld
-    </div>
+  </div>
+  -->
 	<h1> Rechnungen und Dokumente Online einreichen. </h1>
 	<div>
 		<p>
-			Bitte geben Sie uns hier......
+		  Die mit * gekennzeichneten Felder sind Pflichtfelder.
 		</p>
 		<fieldset>
 			<form class="form-horizontal" enctype="multipart/form-data" method="post" novalidate="novalidate" action="" tal:attributes="action request.URL">
 
 
 					<div class="row col-md-12">
-            <div tal:define="widget view.fieldWidgets.get('form.field.anrede')">
-                 <div metal:use-macro="path: view/template/macros/field_inline_fix_uk" />
-						</div>
+                      <div tal:define="widget view.fieldWidgets.get('form.field.anrede')"
+                          metal:use-macro="path: view/template/macros/field_inline_fix_uk">
+					  </div>
 					</div>
 					<div class="row col-md-12">
 						<div tal:define="widget view.fieldWidgets.get('form.field.titel')"
@@ -75,8 +77,9 @@
 					<div class="row col-md-12">
 						<div tal:define="widget view.fieldWidgets.get('form.field.datenschutz')"
 							metal:use-macro="path: view/template/macros/field_inline_fix_uk">
-            </div>
-            <p class="help"> Die Datenschutzbedingungen können Sie <a href="https://www.ukh.de/kontakt/datenschutz/" target="_blank"> hier </a> herunterladen </p>
+                       </div>
+                       <p class="help"> Die Datenschutzbedingungen können Sie <a href="https://www.ukh.de/kontakt/datenschutz/"
+                           target="_blank"><mark class="blue"> hier </mark></a> herunterladen </p>
 					</div>
 
 					<div class="row col-md-12">

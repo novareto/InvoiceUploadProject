@@ -38,18 +38,14 @@ def pdf_seitenkopf(data, saveverzeichnis, c, schriftart, schriftartfett, datum):
 
 
 def UploadPdf(data, tmp):
-
-    data = {}
-    data["anrede"] = u"Herr"
-    data["titel"] = u""
-    data["nachname"] = u"Seibert"
-    data["vorname"] = u"Markus"
-    data["email"] = u"m.seibert@ukh.de"
-    data["telefon"] = u"069-29972-526"
-    data["aktz"] = u"2020000001"
-    data["unternehmen"] = u"Unfallkasse / KT"
-    data["notiz"] = u"bla bla bla...."
-
+    if data['anrede'] == 'herr':
+        anrede = u'Herr'
+    elif data['anrede'] == 'frau':
+        anrede = u'Frau'
+    elif data['anrede'] == 'divers':
+        anrede = u'Divers'
+    else:
+        anrede = data['anrede']
     seite = 1
     datum = str(strftime("%d.%m.%Y", localtime()))
     if tmp is None:
@@ -94,7 +90,7 @@ def UploadPdf(data, tmp):
     c.setFont(schriftartfett, 11)
     c.drawString(x1 * cm, y1 * cm, u"Anrede:")
     c.setFont(schriftart, 11)
-    c.drawString(x2 * cm, y1 * cm, data["anrede"])
+    c.drawString(x2 * cm, y1 * cm, anrede)
     y1 -= 0.5
     c.setFont(schriftartfett, 11)
     c.drawString(x1 * cm, y1 * cm, u"Titel:")
@@ -125,6 +121,14 @@ def UploadPdf(data, tmp):
     c.drawString(x1 * cm, y1 * cm, u"Unternehmen:")
     c.setFont(schriftart, 11)
     c.drawString(x2 * cm, y1 * cm, data["unternehmen"])
+    y1 -= 1.0
+    c.setFont(schriftartfett, 11)
+    c.drawString(x1 * cm, y1 * cm, u"Datenschutz:")
+    c.setFont(schriftart, 10)
+    if data["datenschutz"] is True:
+        c.drawString(x2 * cm, y1 * cm, u"Die Datenschutzbestimmungen der Unfallkasse Hessen  wurden bestätigt.")
+    else:
+        c.drawString(x2 * cm, y1 * cm, u"Die Datenschutzbestimmungen der Unfallkasse Hessen  wurden NICHT bestätigt.")
     y1 -= 1.0
     c.setFont(schriftartfett, 11)
     c.drawString(x1 * cm, y1 * cm, u"Notiz:")
