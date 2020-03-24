@@ -8,3 +8,6 @@ site-definition ${site_zcml:output}
 
 devmode off 
 
+<product-config settings>
+   output_path ${settings:output_path}
+</product-config>

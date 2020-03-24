@@ -68,13 +68,11 @@
 							metal:use-macro="path: view/template/macros/field_inline_fix_uk">
 						</div>
 					</div>
-          <!--
 					<div class="row col-md-12">
 						<div tal:define="widget view.fieldWidgets.get('form.field.captcha')"
 							metal:use-macro="path: view/template/macros/field_inline_fix_uk">
 						</div>
 					</div>
-          -->
 				<div class="row">
 					<div metal:use-macro="path: view/template/macros/form-actions"></div>
 				</div>

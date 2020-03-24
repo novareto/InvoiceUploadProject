@@ -2,19 +2,30 @@
 # # Copyright (c) 2007-2019 NovaReto GmbH
 # # cklinger@novareto.de
 
+import img2pdf
+import logging
 import grokcore.view as grok
 # from invoiceuploader import resource
+
+
+from PIL import Image
+from .pdf import UploadPdf
+from datetime import datetime
+from StringIO import StringIO
+from zeam.form.layout import Form
 from invoiceuploader import interface
 from zope.interface import implementer
 from megrok.nozodb import ApplicationRoot
-from zeam.form.layout import Form
 from zeam.form.base import action, Fields
 from dolmen.forms.base import ApplicationForm
-from .pdf import UploadPdf
 from PyPDF2 import PdfFileReader, PdfFileWriter
-from PIL import Image
-import img2pdf
-from StringIO import StringIO
+from zope.app.appsetup.product import getProductConfiguration
+
+
+logger = logging.getLogger('impageuploader')
+
+
+settings = getProductConfiguration('settings')
 
 
 grok.templatedir("templates")
@@ -30,7 +41,7 @@ class LandingPage(ApplicationForm):
     grok.name("index")
     grok.require("zope.Public")
 
-    fields = Fields(interface.IInvoice).omit('captcha')
+    fields = Fields(interface.IInvoice)
 
     @action("Senden")
     def handel_save(self):
@@ -38,10 +49,9 @@ class LandingPage(ApplicationForm):
         if errors:
             self.flash(u'Es sind leider Feher aufgetreten')
             return
-        output_file = "/tmp/klaus.pdf"
+        output_path = settings.get('output_path')
         pdfstreams = []
         pdf_fn = UploadPdf(data, None)
-        writer = PdfFileWriter()
         for attachment in data.get('anlagen'):
             if "pdf" in attachment.filename:
                 pdfstreams.append(attachment)
@@ -57,11 +67,14 @@ class LandingPage(ApplicationForm):
                 pdfimage = img2pdf.convert(jpegimage)
                 pdfstreams.append(StringIO(pdfimage))
         deckblatt = PdfFileReader(pdf_fn)
-        for stream in pdfstreams:
+        fn_base = datetime.now().strftime('%Y%m%d_%H%M%S')
+        for i, reader in enumerate(map(PdfFileReader, pdfstreams)):
+            output_file = "%s/%s_%s.pdf" % (output_path, fn_base, i)
+            logger.info('Write File %s' % output_file)
+            writer = PdfFileWriter()
             with open(output_file, 'wb') as output:
-                for reader in map(PdfFileReader, pdfstreams):
-                    writer.addPage(deckblatt.getPage(0))
-                    for n in range(reader.getNumPages()):
-                        writer.addPage(reader.getPage(n))
-                        writer.write(output)
-        print(data)
+                writer.addPage(deckblatt.getPage(0))
+                for n in range(reader.getNumPages()):
+                    writer.addPage(reader.getPage(n))
+                    writer.write(output)
+        self.flash(u'Vielen Dank wir haben Ihre Dateien erhalten.')
