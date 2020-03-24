@@ -88,6 +88,12 @@ class IInvoice(interface.Interface):
         required=False
     )
 
+    datenschutz = schema.Bool(
+        title=u"Datenschutz",
+        description=u"Hiermit bestätige ich die Datenschutzbedingungen der UKH",
+        required=True
+    )
+
     captcha = Captcha(
         title=u"Sicherheitscode",
         required=True

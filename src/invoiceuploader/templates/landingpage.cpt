@@ -1,5 +1,8 @@
 <div>
-	<h1> Rechnungen Online einreichen </h1>
+  <div class="pull-right">
+    * Pflichtfeld
+    </div>
+	<h1> Rechnungen und Dokumente Online einreichen. </h1>
 	<div>
 		<p>
 			Bitte geben Sie uns hier......
@@ -68,6 +71,14 @@
 							metal:use-macro="path: view/template/macros/field_inline_fix_uk">
 						</div>
 					</div>
+
+					<div class="row col-md-12">
+						<div tal:define="widget view.fieldWidgets.get('form.field.datenschutz')"
+							metal:use-macro="path: view/template/macros/field_inline_fix_uk">
+            </div>
+            <p class="help"> Die Datenschutzbedingungen können Sie <a href="https://www.ukh.de/kontakt/datenschutz/" target="_blank"> hier </a> herunterladen </p>
+					</div>
+
 					<div class="row col-md-12">
 						<div tal:define="widget view.fieldWidgets.get('form.field.captcha')"
 							metal:use-macro="path: view/template/macros/field_inline_fix_uk">
@@ -82,13 +93,15 @@
 
 </div>
 <div tal:condition="exists: widget">
-<span metal:define-macro="field_inline_fix_uk" tal:attributes="id 'field-' + widget.htmlId(); class widget.error and 'control-group error' or 'control-group'">
-    <label for="#" tal:attributes="for widget.htmlId()" tal:content="widget.title"> </label>
+<div metal:define-macro="field_inline_fix_uk" tal:attributes="id 'field-' + widget.htmlId(); class widget.error and 'control-group error' or 'control-group'">
+  <label for="#" tal:attributes="for widget.htmlId()" tal:content="widget.title"> 
+  </label>
+  <span tal:condition="widget.required" tal:content="'*'"> </span> 
       <p class="help-block">
         <span tal:condition="widget.description" tal:content="structure widget.description" tal:attributes="for widget.htmlId()"></span>
       </p>
     <tal:widget tal:content="structure widget.render()" />
-</span>
+</div>
 
 <div metal:define-macro="form-actions" class="form-actions" tal:condition="view.actionWidgets">
     <span class="action" tal:repeat="widget view.actionWidgets">

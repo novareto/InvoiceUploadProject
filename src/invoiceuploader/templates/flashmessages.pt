@@ -1,0 +1,6 @@
+<tal:messages tal:repeat="message viewlet/messages" condition="viewlet/messages">
+  <div class="" tal:attributes="class string:alert alert-${message/type}">
+    <span tal:replace="message/message"/> 
+  </div>
+</tal:messages>
+
