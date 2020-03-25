@@ -6,3 +6,16 @@ div.error {
 .control-group {
     padding: 10px;
 }
+
+.help {
+    padding: 10px;
+}
+
+mark.blue {
+    color: #0000A0;
+    background: none;
+}
+
+#header {
+    background-image: none!important; 
+}

@@ -21,7 +21,7 @@ from dolmen.forms.base import ApplicationForm
 from PyPDF2 import PdfFileReader, PdfFileWriter, PdfFileMerger
 from zope.app.appsetup.product import getProductConfiguration
 from uvc.tbskin.viewlets import FlashMessages
-
+from zeam.form.base.markers import NO_VALUE
 
 logger = logging.getLogger('impageuploader')
 
@@ -55,8 +55,18 @@ class LandingPage(ApplicationForm):
     def handel_save(self):
         data, errors = self.extractData()
         if errors:
-            self.flash(u'Es sind leider Feher aufgetreten')
+            self.flash(u'Es sind leider Fehler aufgetreten')
             return
+        if data['anrede'] == '':
+            self.flash(u'Bitte wählen Sie eine Anrede aus.')
+            return
+        if data['datenschutz'] is False:
+            self.flash(u'Bitte bestätigen Sie die Datenschutzbestimmungen der UKH.')
+            return
+        for x in data['anlagen']:
+            if x == NO_VALUE:
+                self.flash(u'Sie haben keine Dateien zum Upload ausgewählt!')
+                return
         output_path = settings.get('output_path')
         pdfstreams = []
         pdf_fn = UploadPdf(data, None)
