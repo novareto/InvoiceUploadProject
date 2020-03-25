@@ -18,7 +18,7 @@ from zope.interface import implementer
 from megrok.nozodb import ApplicationRoot
 from zeam.form.base import action, Fields
 from dolmen.forms.base import ApplicationForm
-from PyPDF2 import PdfFileReader, PdfFileWriter
+from PyPDF2 import PdfFileReader, PdfFileWriter, PdfFileMerger
 from zope.app.appsetup.product import getProductConfiguration
 from uvc.tbskin.viewlets import FlashMessages
 
@@ -79,11 +79,13 @@ class LandingPage(ApplicationForm):
         for i, reader in enumerate(map(PdfFileReader, pdfstreams)):
             output_file = "%s/%s_%s.pdf" % (output_path, fn_base, i)
             logger.info('Write File %s' % output_file)
-            writer = PdfFileWriter()
+            writer = PdfFileMerger()
             with open(output_file, 'wb') as output:
-                writer.addPage(deckblatt.getPage(0))
-                for n in range(reader.getNumPages()):
-                    writer.addPage(reader.getPage(n))
-                    writer.write(output)
+                writer.append(deckblatt)
+                writer.append(reader)
+                writer.write(output)
+                #for n in range(reader.getNumPages()):
+                #    writer.addPage(reader.getPage(n))
+                #    writer.write(output)
         self.flash(u'Vielen Dank wir haben Ihre Dateien erhalten.')
         self.redirect(self.application_url())
