@@ -141,23 +141,6 @@ def UploadPdf(data, tmp):
         y1 -= 0.4
         c.drawString(x1 * cm, y1 * cm, text[z1])
         z1 += 1
-    # ----------------------------------------------
-    # Seitenwechsel
-    # ----------------------------------------------
-    c.showPage()
-    c = pdf_seitenkopf(data, saveverzeichnis, c, schriftart, schriftartfett, datum)
-    seite += 1
-    c.setFillColor(black)
-    c.setFont(schriftartfett, 11)
-    y1 = 28.5
-    x1 = 16
-    c.drawString(x1 * cm, y1 * cm, u"Seite: " + str(seite))
-    # ----------------------------------------------
-
-    # Hier müsste ein Bild etc. eingefügt werden...
-    #
-    # ????
-
     # Seitenumbruch
     c.showPage()
     # ENDE und Save

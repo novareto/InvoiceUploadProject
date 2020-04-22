@@ -83,18 +83,18 @@ class IInvoice(interface.Interface):
     )
 
     anlagen = FilesField(
-        title=u"Anlagen",
-        description=u"Bitte beachten Sie, dass nur folgende Formate zugelassen werden. (gif, png, jpeg, pdf)",
-        required=False
+        title=u"Anlagen:",
+        description=u"Bitte beachten Sie, dass nur die Formate gif, png, jpg und pdf für den Upload zugelassen sind. Die Dateigröße darf 5 MB nicht überschreiten.",
+        required=True
     )
 
     datenschutz = schema.Bool(
-        title=u"Datenschutz",
-        description=u"Hiermit bestätige ich die Datenschutzbedingungen der UKH",
+        title=u"Datenschutz:",
+        description=u"Ich habe die Datenschutzerklärung gelesen.",
         required=True
     )
 
     captcha = Captcha(
-        title=u"Sicherheitscode",
+        title=u"Sicherheitscode:",
         required=True
     )

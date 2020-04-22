@@ -5,9 +5,9 @@
 import img2pdf
 import logging
 import grokcore.view as grok
+import re
+
 from invoiceuploader import resource
-
-
 from PIL import Image
 from .pdf import UploadPdf
 from datetime import datetime
@@ -22,6 +22,7 @@ from PyPDF2 import PdfFileReader, PdfFileWriter, PdfFileMerger
 from zope.app.appsetup.product import getProductConfiguration
 from uvc.tbskin.viewlets import FlashMessages
 from zeam.form.base.markers import NO_VALUE
+from ukhtheme.grok.viewlets import BGHeader
 
 logger = logging.getLogger('impageuploader')
 
@@ -30,6 +31,12 @@ settings = getProductConfiguration('settings')
 
 
 grok.templatedir("templates")
+
+
+class BGHeader(BGHeader):
+
+    def application_url(self):
+        return u"http://www.ukh.de"
 
 
 @implementer(interface.IInvoiceUploader)
@@ -60,8 +67,13 @@ class LandingPage(ApplicationForm):
         if data['anrede'] == '':
             self.flash(u'Bitte wählen Sie eine Anrede aus.')
             return
+        if data['email'] != '':
+            checkmail = re.compile(r"^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$").match
+            if not bool(checkmail(data['email'])):
+                self.flash(u'Bitte tragen Sie eine gültige E-Mail Adresse ein.')
+                return
         if data['datenschutz'] is False:
-            self.flash(u'Bitte bestätigen Sie die Datenschutzbestimmungen der UKH.')
+            self.flash(u'Bitte bestätigen Sie die Datenschutzerklärung der UKH.')
             return
         for x in data['anlagen']:
             if x == NO_VALUE:
@@ -97,5 +109,5 @@ class LandingPage(ApplicationForm):
                 #for n in range(reader.getNumPages()):
                 #    writer.addPage(reader.getPage(n))
                 #    writer.write(output)
-        self.flash(u'Vielen Dank wir haben Ihre Dateien erhalten.')
+        self.flash(u'Vielen Dank, wir haben Ihre Dateien erhalten.')
         self.redirect(self.application_url())
