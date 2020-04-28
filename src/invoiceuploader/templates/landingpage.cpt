@@ -84,7 +84,6 @@
                        <p class="help"> Die Datenschutzerklärung können Sie <a href="https://www.ukh.de/kontakt/datenschutz/"
                            target="_blank"><mark class="blue"> hier </mark></a> herunterladen </p>
 					</div>
-
 					<div class="row col-md-12">
 						<div tal:define="widget view.fieldWidgets.get('form.field.captcha')"
 							metal:use-macro="path: view/template/macros/field_inline_fix_uk">

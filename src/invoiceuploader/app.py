@@ -4,14 +4,17 @@
 
 import img2pdf
 import logging
+import tempfile
+import subprocess
 import grokcore.view as grok
 import re
+import os
 
+from StringIO import StringIO
 from invoiceuploader import resource
 from PIL import Image
 from .pdf import UploadPdf
 from datetime import datetime
-from StringIO import StringIO
 from zeam.form.layout import Form
 from invoiceuploader import interface
 from zope.interface import implementer
@@ -83,8 +86,30 @@ class LandingPage(ApplicationForm):
         pdfstreams = []
         pdf_fn = UploadPdf(data, None)
         for attachment in data.get('anlagen'):
+            print attachment.filename
             if "pdf" in attachment.filename:
                 pdfstreams.append(attachment)
+
+
+            elif "heic" in attachment.filename:
+                from backports.tempfile import TemporaryDirectory
+                with TemporaryDirectory() as tmpdirname:
+                    ifn = '%s/%s' % (tmpdirname, attachment.filename)
+                    ofn = '%s/%s.jpg' % (tmpdirname, attachment.filename)
+                    import pdb; pdb.set_trace()
+
+                    with open(ifn, 'wb') as heic:
+                        heic.write(attachment.read())
+                    subprocess.call(["heif-convert", ifn, ofn])
+                    with open(ofn, 'rb') as f:
+                        rgbimage = Image.open(f)
+                        jpegimage = StringIO()
+                        rgbimage.save(jpegimage, format="JPEG")
+                        jpegimage.seek(0)
+                        pdfimage = img2pdf.convert(jpegimage)
+                        pdfstreams.append(StringIO(pdfimage))
+
+
             elif "jpeg" in attachment.filename or 'jpg' or 'png' in attachment.filename:
                 pilimage = Image.open(attachment)
                 if pilimage.mode == "RGBA":

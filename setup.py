@@ -45,6 +45,7 @@ setup(name='invoiceuploader',
                         'reportlab',
                         'PyPDF2',
                         'img2pdf',
+                        'backports.tempfile'
                         ],
       entry_points={
           'fanstatic.libraries': [
